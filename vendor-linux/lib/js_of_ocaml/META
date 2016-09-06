@@ -1,0 +1,150 @@
+version = "2.8.1"
+description = "Js_of_ocaml library"
+archive(byte) = "js_of_ocaml.cma"
+requires = "lwt"
+linkopts(-jsoo_noruntime,javascript) = "+js_of_ocaml/runtime.js"
+linkopts(javascript,jsoo_classlist) += "+js_of_ocaml/classlist.js"
+linkopts(javascript,pkg_graphics) += "+js_of_ocaml/graphics.js"
+linkopts(javascript,pkg_num) += "+js_of_ocaml/nat.js"
+
+package "syntax" (
+description = "Js_of_ocaml syntax extension"
+version = "[distributed with js_of_ocaml]"
+requires(syntax) = "camlp4"
+archive(preprocessor,syntax) = "pa_js.cmo"
+)
+
+package "ppx" (
+description = "Js_of_ocaml ppx"
+version = "[distributed with js_of_ocaml]"
+ppx = "./ppx_js"
+requires = "js_of_ocaml"
+exists_if = "ppx_js"
+
+package "internal" (
+description = "Js_of_ocaml ppx mapper"
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "ppx_js.cma"
+archive(byte,plugin) = "ppx_js.cma"
+archive(native) = "ppx_js.cmxa"
+archive(native,plugin) = "ppx_js.cmxs"
+requires = "ppx_tools"
+)
+
+package "driver" (
+description = "Js_of_ocaml ppx driver"
+version = "[distributed with js_of_ocaml]"
+requires = "ppx_driver ppx_tools js_of_ocaml.ppx.internal"
+requires(ppx_driver) = "ppx_driver ppx_tools js_of_ocaml.ppx.internal"
+archive(byte,ppx_driver) = "ppx_js_driver.cma"
+archive(native,ppx_driver) = "ppx_js_driver.cmxa"
+archive(native,plugin,ppx_driver) = "ppx_js_driver.cmxs"
+exists_if = "ppx_js_driver.cma"
+)
+)
+
+package "deriving" (
+exists_if = "deriving_json.cma deriving_json.cmxa"
+description = "Runtime library for the class Json."
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "deriving_json.cma"
+archive(native) = "deriving_json.cmxa"
+requires = "bytes"
+requires(syntax) = "js_of_ocaml.deriving.syntax"
+
+package "syntax" (
+description = "Safe \"IO in JSON\" class for deriving."
+version = "[distributed with js_of_ocaml]"
+archive(preprocessor,syntax) = "pa_deriving_Json.cmo"
+archive(syntax,toploop) = "pa_deriving_Json.cmo"
+requires(syntax) = "deriving.syntax.common"
+)
+
+package "ppx" (
+description = "[@@deriving json]"
+version = "[distributed with js_of_ocaml]"
+exists_if = "ppx_deriving_json.cma"
+requires(-ppx_driver) = "ppx_deriving"
+ppxopt(-ppx_driver) = "ppx_deriving,./ppx_deriving_json.cma"
+requires(ppx_driver) = "ppx_deriving.api"
+archive(byte,ppx_driver) = "ppx_deriving_json.cma"
+archive(native,ppx_driver) = "ppx_deriving_json.cmxa"
+)
+)
+
+package "async" (
+exists_if = "async_js.cma"
+description = "Async_kernel for js_of_ocaml."
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "async_js.cma"
+requires = "async_kernel,js_of_ocaml"
+)
+
+package "graphics" (
+exists_if = "graphics.cma"
+description = "Graphics for js_of_ocaml."
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "graphics.cma"
+requires = "lwt,graphics,js_of_ocaml"
+)
+
+package "tyxml" (
+exists_if = "tyxml_js.cma"
+description = "Tyxml for js_of_ocaml."
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "tyxml_js.cma"
+requires = "tyxml.functor,reactiveData,react,js_of_ocaml,js_of_ocaml.weak"
+)
+
+package "log" (
+exists_if = "logger.cma"
+description = "Lwt logger for js_of_ocaml."
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "logger.cma"
+requires = "lwt,lwt.log,js_of_ocaml,js_of_ocaml.weak"
+)
+
+package "weak" (
+exists_if = "weak.js"
+description = "weak emulation for js_of_ocaml."
+version = "[distributed with js_of_ocaml]"
+linkopts(javascript) = "+js_of_ocaml/weak.js"
+)
+
+package "ocamlbuild" (
+description = "Js_of_ocaml ocamlbuild plugin"
+requires = "ocamlbuild,str"
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "ocamlbuild_js_of_ocaml.cma"
+archive(byte,plugin) = "ocamlbuild_js_of_ocaml.cma"
+archive(native) = "ocamlbuild_js_of_ocaml.cmxa"
+archive(native,plugin) = "ocamlbuild_js_of_ocaml.cmxs"
+)
+
+package "compiler" (
+description = "Js_of_ocaml compiler library"
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "compiler.cma"
+archive(byte,plugin) = "compiler.cma"
+archive(native) = "compiler.cmxa"
+archive(native,plugin) = "compiler.cmxs"
+requires = "base64,bytes"
+
+package "with_findlib" (
+exists_if = "jsoo_findlib_support.cma"
+archive(byte) = "jsoo_findlib_support.cma"
+archive(byte,plugin) = "jsoo_findlib_support.cma"
+archive(native) = "jsoo_findlib_support.cmxa"
+archive(native,plugin) = "jsoo_findlib_support.cmxs"
+requires = "findlib,js_of_ocaml.compiler"
+)
+)
+
+package "toplevel" (
+exists_if = "jsooTop.cmo"
+description = "Js_of_ocaml toplevel library"
+version = "[distributed with js_of_ocaml]"
+archive(byte) = "jsooTopError.cmo jsooTopPpx.cmo jsooTop.cmo"
+requires = "bytes,compiler-libs.bytecomp,compiler-libs.common,compiler-libs.toplevel,js_of_ocaml,js_of_ocaml.compiler"
+linkopts(javascript) = "+js_of_ocaml/toplevel.js"
+)
