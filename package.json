@@ -1,0 +1,51 @@
+{
+  "name": "js_of_ocaml-bin",
+  "version": "2.8.1",
+  "description": "bin wrapper for js_of_ocaml",
+  "license": "MIT",
+  "scripts": {
+    "postinstall": "eval $(dependencyEnv) && nopam && make install"
+  },
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "exportedEnvVars": {
+      "js_of_ocaml_version": {
+          "global": true,
+          "globalCollisionBehavior": "clobber",
+          "val": "2.8.1"
+      },
+      "FINDLIB": {
+          "global": true,
+          "resolveAsRelativePath": true,
+          "globalCollisionBehavior": "joinPath",
+          "val": "./_build/ocamlfind/lib"
+      },
+      "version": {
+          "global": true,
+          "globalCollisionBehavior": "clobber",
+          "val": "2.8.1"
+      },
+      "PATH": {
+          "global": true,
+          "resolveAsRelativePath": true,
+          "globalCollisionBehavior": "joinPath",
+          "val": "./_build/ocamlfind/bin"
+      },
+      "js_of_ocaml_installed": {
+          "global": true,
+          "globalCollisionBehavior": "clobber",
+          "val": "true"
+      },
+      "js_of_ocaml_enable": {
+          "global": true,
+          "globalCollisionBehavior": "clobber",
+          "val": "enable"
+      }
+  },
+  "dependencies": {
+    "nopam": "https://github.com/yunxing/nopam.git",
+    "ocamlfind": "https://github.com/npm-opam/ocamlfind",
+    "dependency-env": "https://github.com/npm-ml/dependency-env.git"
+  }
+}
