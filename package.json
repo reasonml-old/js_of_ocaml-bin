@@ -21,6 +21,12 @@
           "globalCollisionBehavior": "joinPath",
           "val": "./_build/ocamlfind/lib"
       },
+      "CAML_LD_LIBRARY_PATH": {
+          "global": true,
+          "resolveAsRelativePath": true,
+          "globalCollisionBehavior": "joinPath",
+          "val": "./_build/ocamlfind/lib/js_of_ocaml"
+      },    
       "version": {
           "global": true,
           "globalCollisionBehavior": "clobber",
